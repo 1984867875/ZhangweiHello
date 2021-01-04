@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+    
+     <context:component-scan base-package="com.crx.quanxian"></context:component-scan>
+ 
+    <!--处理器映射器/处理适配器  -->   
+    <mvc:annotation-driven></mvc:annotation-driven>
+    <!--视图解析器  -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+           <property name="prefix" value="/WEB-INF/pages"></property>
+             <property name="suffix" value=".jsp"></property>
+    </bean>
+     <!-- 上传配置-id名字必须是MultipartResolver解析-->
+    <bean id="MultipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+           <property name="defaultEncoding" value="utf-8"></property>
+         <property name="maxUploadSize" value="204800000"></property>
+    </bean>
+    <!-- 静态资源n -->
+ <mvc:resources mapping="/res/**" location="/res/"></mvc:resources>
+
+    <!-- 多个拦截器n-->
+    <mvc:interceptors>
+            <mvc:interceptor>
+                <mvc:mapping path="/**"/>
+                <mvc:exclude-mapping path="login.do"/>
+                <mvc:exclude-mapping path="index.do"/>
+                <bean class="com.crx.quanxian.tools.MyInterceptor"></bean><!--拦截器 -->
+            </mvc:interceptor>
+
+    </mvc:interceptors>
+</beans>
